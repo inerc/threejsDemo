@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="build/three.js"></script>
+</head>
+<body>
+<script>
+    window.onload = init;
+    var scene, camera, render;
+
+    function init() {
+        var cantainer = document.createElement('div');
+        document.body.appendChild(cantainer);
+
+        scene = new THREE.Scene(); //cоздали сцену
+        camera = new THREE.PerspectiveCamera(65, window.innerWidth/window.innerHeight, 0.1, 2000); //перспективная проекция
+        camera.position.y = 150;
+        camera.position.z = 600;
+
+        var line_geometry = new THREE.Geometry(); //Рисуем геометрическую фигуру
+
+        line_geometry.vertices.push(new THREE.Vector3(0, 0 , 0));
+        line_geometry.vertices.push(new THREE.Vector3(0, 200, 0));
+        line_geometry.vertices.push(new THREE.Vector3(30, 200, 0));
+
+        var material_line = new THREE.LineBasicMaterial({color:0xFFFFFF, linewidth:1, opacity: 1});
+        var line = new THREE.Line(line_geometry, material_line); // Реальный обьект
+
+        scene.add(line);
+
+        var geometry = new THREE.PlaneGeometry(window.innerWidth, window.innerHeight);
+        geometry.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI/2));
+        var material = new THREE.MeshBasicMaterial({color:0xe0e0e0});
+        var plane = new THREE.Mesh(geometry, material);
+        scene.add(plane)
+
+
+        render = new THREE.WebGLRenderer(); //Метод рендеринга
+        render.setSize(window.innerWidth,window.innerHeight);
+        cantainer.appendChild(render.domElement);
+        render.render(scene, camera)
+
+
+    }
+
+</script>
+
+</body>
+</html>

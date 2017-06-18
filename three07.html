@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="build/three.js"></script>
+    <script src="build/CanvasRenderer.js"></script>
+    <script src="build/Projector.js"></script>
+</head>
+<body>
+<script>
+    var scene, camera, render;
+    var container;
+
+    container = document.createElement('div');
+    document.body.appendChild(container);
+
+    camera = new  THREE.PerspectiveCamera(45, document.body.clientWidth/document.body.clientHeight, 1, 100000);
+    camera.position.z = 400;
+    camera.position.y = 10;
+
+    scene = new THREE.Scene();
+
+
+    var light = THREE.SpotLight();
+    light.position.set(-300,300, 0);
+    light.castShadow = true;
+    scene.add(light);
+
+    var plane = new THREE.Mesh(new THREE.PlaneGeometry(400, 200, 100, 1000), new THREE.MeshLambertMaterial({color: 0x008cf0}));
+    plane.position.y = -85;
+    plane.receiveShadow = true;
+    scene.add(plane)
+
+    render = new  THREE.WebGLRenderer();
+    render.shadowMapEnabled = true;
+
+
+    render.setSize(document.body.clientWidth, document.body.clientHeight);
+    container.appendChild(render.domElement);
+
+
+    animate();
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+
+        render.render(scene, camera);
+    }
+
+
+</script>
+
+</body>
+</html>

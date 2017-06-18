@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="build/three.js"></script>
+    <script src="build/CanvasRenderer.js"></script>
+    <script src="build/Projector.js"></script>
+</head>
+<body>
+<script>
+    var scene, camera, render;
+    var sphere_geometry, sphere_material, sphere;
+
+    var container;
+
+    container = document.createElement('div');
+    document.body.appendChild(container);
+
+    camera = new THREE.PerspectiveCamera(65, window.innerWidth/window.innerHeight, 0.1, 10000);
+    camera.position.x = 0;
+    camera.position.y = 0;
+    camera.position.z = 8000;
+
+    scene = new THREE.Scene();
+
+    sphere_geometry = new THREE.SphereGeometry(1300, 40, 40);
+//    sphere_material = new THREE.MeshNormalMaterial();
+
+    var texture = new THREE.Texture();
+    var texture_loader = new THREE.ImageLoader();
+//
+
+
+    texture_loader.load('earth.jpg', function (image) {
+        texture.image = image;
+        texture.needsUpdate = true;
+    })
+
+//    texture_loader.addEventListener('load', function (event) {
+//        texture.image = event.content;
+//        texture.needsUpdate = true;
+//    });
+//
+//    texture_loader.load('earth.jpg')
+
+
+    sphere_material = new  THREE.MeshBasicMaterial({map: texture, overdraw:true});
+
+    sphere = new  THREE.Mesh(sphere_geometry, sphere_material);
+
+    scene.add(sphere);
+
+
+    render = new THREE.CanvasRenderer();
+    render.setSize(window.innerWidth, window.innerHeight);
+    container.appendChild(render.domElement);
+
+    animate();
+
+    function animate() {
+        requestAnimationFrame(animate)
+        sphere.rotation.y +=0.01;
+        sphere.rotation.z +=0.01;
+        render.render(scene, camera);
+    }
+
+
+</script>
+
+</body>
+</html>
